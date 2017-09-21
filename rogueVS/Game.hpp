@@ -9,14 +9,15 @@ namespace rg {
 		Game();
 		~Game();
 
+		void startGame() noexcept;
+
 	private:
 		Window gameWindow;
+		bool isRunning;
 
 		void runGameLoop() noexcept;
-		bool handleInput() noexcept;
-
-	public:
-		void startGame() noexcept;
+		void handleInput() noexcept;
+		void endGame() noexcept;
 	};
 }
 

@@ -3,12 +3,11 @@
 #include "GameObject.hpp"
 
 namespace rg {
-	Game::Game() {
+	Game::Game() : gameWindow{} {
 	}
 
 
-	Game::~Game() {
-	}
+	Game::~Game() = default;
 
 	void Game::startGame() noexcept {
 		runGameLoop();

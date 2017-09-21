@@ -2,18 +2,14 @@
 #include "GameObject.hpp"
 
 
-namespace rg
-{
-	GameObject::GameObject(char symbol) {
-		this->symbol = symbol;
+namespace rg {
+	GameObject::GameObject(char symbol) : symbol{ symbol } {
 	}
 
-	GameObject::~GameObject() {
-	}
+	GameObject::~GameObject() = default;
 
-	void GameObject::draw(const int x, const int y, Window window) noexcept
-	{
-		window.putChar(x, y, this->symbol);
+	void GameObject::draw(int x, int y, Window& window) noexcept {
+		window.putChar(x, y, symbol);
 	}
 
 }

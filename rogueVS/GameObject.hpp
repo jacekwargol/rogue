@@ -9,7 +9,7 @@ namespace rg {
 		GameObject(char symbol);
 		~GameObject();
 
-		void draw(const int x, const int y, const Window window) noexcept;
+		void draw(int x, int y, Window& window) noexcept;
 
 	private:
 		char symbol;

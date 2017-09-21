@@ -2,19 +2,16 @@
 #include "Window.hpp"
 
 namespace rg {
-	Window::Window(const int width, const int height, char* title, const bool isFullScreen) {
+	Window::Window(int width, int height, const std::string& title, bool isFullScreen) :
+		width{ width },
+		height{ height },
+		title{ title },
+		isFullScreen{ isFullScreen } {
 
-		this->width = width;
-		this->height = height;
-		this->title = title;
-		this->isFullScreen = isFullScreen;
-
-		TCODConsole::initRoot(this->width, this->height, this->title,
-			this->isFullScreen);
+		TCODConsole::initRoot(width, height, title.c_str(), isFullScreen);
 	}
 
-	Window::~Window() {
-	}
+	Window::~Window() = default;
 
 	void Window::clear() {
 		TCODConsole::root->clear();

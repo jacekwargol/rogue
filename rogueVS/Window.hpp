@@ -7,9 +7,9 @@
 namespace rg {
 	class Window {
 	public:
-		explicit Window(const int width = 150, const int height = 75,
-			char* title = "rogue",
-			const bool isFullScreen = false);
+		explicit Window(int width = 150, int height = 75,
+			const std::string& title = "rogue",
+			bool isFullScreen = false);
 
 		~Window();
 
@@ -17,12 +17,12 @@ namespace rg {
 		void flush();
 		bool isWindowClosed();
 
-		void putChar(const int x, const int y, const char ch);
+		void putChar(int x, int y, char ch);
 
 	private:
 		int width;
 		int height;
-		char* title;
+		std::string title;
 		bool isFullScreen;
 	};
 }

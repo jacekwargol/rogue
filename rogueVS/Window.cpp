@@ -13,22 +13,26 @@ namespace rg {
 
 	Window::~Window() = default;
 
-	void Window::clear() {
+	void Window::clear() noexcept {
 		TCODConsole::root->clear();
 	}
 
-	void Window::flush() {
+	void Window::flush() noexcept {
 		TCODConsole::root->flush();
 	}
 
-	bool Window::isWindowClosed() {
+	bool Window::isWindowClosed() const noexcept {
 		return TCODConsole::isWindowClosed();
 	}
 
-	void Window::putChar(const int x, const int y, const char ch,
-		TCODColor fgColor, TCODColor bgColor) {
+	void Window::drawTile(const Tile& tile) noexcept {
+		TCODConsole::root->putCharEx(tile.x, tile.y, tile.symbol, tile.symColor, tile.bgColor);
+	}
 
-		TCODConsole::root->putCharEx(x, y, ch, fgColor, bgColor);
+	void Window::drawTile(const int x, const int y, const char ch,
+		TCODColor symColor, TCODColor bgColor) noexcept {
+
+		TCODConsole::root->putCharEx(x, y, ch, symColor, bgColor);
 	}
 }
 

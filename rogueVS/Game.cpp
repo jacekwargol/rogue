@@ -1,15 +1,19 @@
 #include "stdafx.h"
 #include "Game.hpp"
 #include "GameObject.hpp"
+#include "Player.hpp"
+#include <iostream>
 
 namespace rg {
-	Game::Game() : gameWindow{}, isRunning{ false } {
+	Game::Game() : gameWindow{}, isRunning{ false }, actors{} {
 	}
 
 
 	Game::~Game() = default;
 
 	void Game::startGame() noexcept {
+		Player player{ 13, 13 };
+		actors.push_back(player);
 		runGameLoop();
 	}
 
@@ -21,8 +25,11 @@ namespace rg {
 	void Game::runGameLoop() noexcept {
 		isRunning = true;
 		while (isRunning) {
-			handleInput();
 			gameWindow.clear();
+			handleInput();
+			for (GameObject actor : actors) {
+				actor.draw(gameWindow);
+			}
 			gameWindow.flush();
 		}
 	}

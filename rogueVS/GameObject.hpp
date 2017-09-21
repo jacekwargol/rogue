@@ -9,13 +9,13 @@ namespace rg {
 
 	class GameObject {
 	public:
-		GameObject(char symbol, TCODColor fgColor = TCODColor::white,
+		GameObject(char symbol, TCODColor symColor = TCODColor::white,
 			TCODColor bgColor = TCODColor::black,
 			int posX = -1, int posY = -1);
 
 		~GameObject();
 
-		void draw(int x, int y, Window& window) noexcept;
+		void draw(Window& window) noexcept;
 
 	protected:
 		Tile tile;

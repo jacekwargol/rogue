@@ -7,7 +7,7 @@ namespace rg {
 	struct Tile {
 		int x, y;
 		char symbol;
-		TCODColor fgColor, bgColor;
+		TCODColor symColor, bgColor;
 	};
 
 }

@@ -2,6 +2,8 @@
 #include "stdafx.h"
 
 #include "Window.hpp"
+#include <vector>
+#include "GameObject.hpp"
 
 namespace rg {
 	class Game {
@@ -14,6 +16,7 @@ namespace rg {
 	private:
 		Window gameWindow;
 		bool isRunning;
+		std::vector<GameObject> actors;
 
 		void runGameLoop() noexcept;
 		void handleInput() noexcept;

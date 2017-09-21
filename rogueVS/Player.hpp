@@ -6,7 +6,7 @@
 namespace rg {
 	class Player : public GameObject {
 	public:
-		Player();
+		Player(int x = -1, int y = -1);
 		~Player();
 	};
 }

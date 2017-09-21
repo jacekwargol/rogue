@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "Tile.hpp"
 
 
 namespace rg {
@@ -12,12 +13,12 @@ namespace rg {
 
 		~Window();
 
-		void clear();
-		void flush();
-		bool isWindowClosed();
-
-		void putChar(int x, int y, char ch,
-			TCODColor fgColor = TCODColor::white, TCODColor bgColor = TCODColor::black);
+		void clear() noexcept;
+		void flush() noexcept;
+		bool isWindowClosed() const noexcept;
+		void drawTile(const Tile& tile) noexcept;
+		void drawTile(int x, int y, char ch,
+			TCODColor symColor = TCODColor::white, TCODColor bgColor = TCODColor::black) noexcept;
 
 	private:
 		int width;

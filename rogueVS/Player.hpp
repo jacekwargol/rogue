@@ -6,7 +6,8 @@
 namespace rg {
 	class Player : public GameObject {
 	public:
-
+		Player();
+		~Player();
 	};
 }
 

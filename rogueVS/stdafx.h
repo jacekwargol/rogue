@@ -10,6 +10,8 @@
 #include <tchar.h>
 #include <string>
 
+#include "include/libtcod.hpp"
+
 
 
 // TODO: reference additional headers your program requires here

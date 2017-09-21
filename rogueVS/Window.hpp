@@ -2,7 +2,6 @@
 
 #include "stdafx.h"
 
-#include "include/libtcod.hpp"
 
 namespace rg {
 	class Window {
@@ -17,7 +16,8 @@ namespace rg {
 		void flush();
 		bool isWindowClosed();
 
-		void putChar(int x, int y, char ch);
+		void putChar(int x, int y, char ch,
+			TCODColor fgColor = TCODColor::white, TCODColor bgColor = TCODColor::black);
 
 	private:
 		int width;

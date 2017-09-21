@@ -25,8 +25,10 @@ namespace rg {
 		return TCODConsole::isWindowClosed();
 	}
 
-	void Window::putChar(const int x, const int y, const char ch) {
-		TCODConsole::root->putChar(x, y, ch);
+	void Window::putChar(const int x, const int y, const char ch,
+		TCODColor fgColor, TCODColor bgColor) {
+
+		TCODConsole::root->putCharEx(x, y, ch, fgColor, bgColor);
 	}
 }
 

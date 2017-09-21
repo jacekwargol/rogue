@@ -11,7 +11,7 @@ namespace rg {
 
 		void draw(int x, int y, Window& window) noexcept;
 
-	private:
+	protected:
 		char symbol;
 	};
 }

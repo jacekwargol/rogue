@@ -3,6 +3,7 @@
 #include "GameObject.hpp"
 #include "Player.hpp"
 #include <iostream>
+#include "Map.hpp"
 
 namespace rg {
 	Game::Game() : gameWindow{}, isRunning{ false }, actors{} {
@@ -12,8 +13,7 @@ namespace rg {
 	Game::~Game() = default;
 
 	void Game::startGame() noexcept {
-		Player player{ 13, 13 };
-		actors.push_back(player);
+		actors.push_back(std::make_shared<Player>(13, 13));
 		runGameLoop();
 	}
 
@@ -23,12 +23,16 @@ namespace rg {
 
 
 	void Game::runGameLoop() noexcept {
+		Map map{};
+		map.generateMap();
+
 		isRunning = true;
 		while (isRunning) {
 			gameWindow.clear();
 			handleInput();
-			for (GameObject actor : actors) {
-				actor.draw(gameWindow);
+			map.draw(gameWindow);
+			for (auto& actor : actors) {
+				actor->draw(gameWindow);
 			}
 			gameWindow.flush();
 		}

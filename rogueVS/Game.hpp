@@ -4,6 +4,7 @@
 #include "Window.hpp"
 #include <vector>
 #include "GameObject.hpp"
+#include <memory>
 
 namespace rg {
 	class Game {
@@ -16,7 +17,7 @@ namespace rg {
 	private:
 		Window gameWindow;
 		bool isRunning;
-		std::vector<GameObject> actors;
+		std::vector<std::shared_ptr<GameObject>> actors;
 
 		void runGameLoop() noexcept;
 		void handleInput() noexcept;

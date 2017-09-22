@@ -4,7 +4,7 @@
 
 namespace rg {
 	GameObject::GameObject(char symbol, TCODColor symColor, TCODColor bgColor,
-		int x, int y) : tile{ x, y, symbol, symColor, bgColor } {
+		int x, int y) : tile(symbol, symColor, bgColor, x, y) {
 	}
 
 	GameObject::~GameObject() = default;

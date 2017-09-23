@@ -21,10 +21,25 @@ namespace rg {
 		bool isTileAtPosition(int x, int y) const noexcept;
 
 	private:
+		struct Room {
+			int upperLeftX;
+			int upperLeftY;
+			int width;
+			int height;
+			bool isConnected;
+
+			Room(int upperLeftX, int upperLeftY, int width, int height, bool isConnected = false);
+		};
+
 		int width, height;
 		std::vector<Tile> map;
+		std::vector<Room> rooms;
 
 		void createRoom(int width, int height, int x, int y) noexcept;
+		void createCorridors() noexcept;
+		void connectRooms(Room& room1, Room& room2) noexcept;
+
+
 	};
 }
 

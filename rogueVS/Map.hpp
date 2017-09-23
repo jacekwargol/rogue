@@ -17,6 +17,9 @@ namespace rg {
 		void generateMap() noexcept;
 		void draw(Window& window) noexcept;
 
+		bool isWall(int x, int y) const noexcept;
+		bool isTileAtPosition(int x, int y) const noexcept;
+
 	private:
 		int width, height;
 		std::vector<Tile> map;

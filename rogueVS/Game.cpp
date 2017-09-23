@@ -59,7 +59,6 @@ namespace rg {
 
 	void Game::handleGameWindow() noexcept {
 		gameWindow.clear();
-		gameWindow.moveView(10, 10);
 	}
 
 }

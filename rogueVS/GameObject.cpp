@@ -13,5 +13,13 @@ namespace rg {
 		window.drawTile(tile);
 	}
 
+	int GameObject::getX() const noexcept {
+		return tile.x;
+	}
+
+
+	int GameObject::getY() const noexcept {
+		return tile.y;
+	}
 }
 

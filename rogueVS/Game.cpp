@@ -6,14 +6,15 @@
 #include "Map.hpp"
 
 namespace rg {
-	Game::Game() : gameWindow{}, isRunning{ false }, actors{} {
+	Game::Game() : gameWindow{}, isRunning{ false }, actors{}, map{ 50, 50 }, player{ 13, 13 } {
+		actors.push_back(std::make_shared<Player>(player));
+		map.generateMap();
 	}
 
 
 	Game::~Game() = default;
 
 	void Game::startGame() noexcept {
-		actors.push_back(std::make_shared<Player>(13, 13));
 		runGameLoop();
 	}
 
@@ -23,19 +24,24 @@ namespace rg {
 
 
 	void Game::runGameLoop() noexcept {
-		Map map{};
-		map.generateMap();
-
 		isRunning = true;
 		while (isRunning) {
-			gameWindow.clear();
-			handleInput();
-			map.draw(gameWindow);
-			for (auto& actor : actors) {
-				actor->draw(gameWindow);
-			}
-			gameWindow.flush();
+			runGame();
 		}
+	}
+
+	void Game::runGame() noexcept {
+		handleInput();
+		drawObjects();
+		handleGameWindow();
+	}
+
+	void Game::drawObjects() noexcept {
+		map.draw(gameWindow);
+		for (auto& actor : actors) {
+			actor->draw(gameWindow);
+		}
+		gameWindow.flush();
 	}
 
 	void Game::handleInput() noexcept {
@@ -50,4 +56,10 @@ namespace rg {
 			break;
 		}
 	}
+
+	void Game::handleGameWindow() noexcept {
+		gameWindow.clear();
+		gameWindow.moveView(10, 10);
+	}
+
 }

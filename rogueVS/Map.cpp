@@ -9,7 +9,12 @@ namespace rg {
 	Map::~Map() = default;
 
 	void Map::generateMap() noexcept {
-		createRoom(10, 10, 0, 0);
+		//TCODRandom rng;
+		//int noRooms = rng.get(5, 10);
+		//for (int i = 0; i < noRooms; ++i) {
+		//	createRoom(10, 30, i * 10, i * 15);
+		//}
+		createRoom(160, 85, 0, 0);
 	}
 
 	void Map::draw(Window& window) noexcept {
@@ -20,7 +25,7 @@ namespace rg {
 
 	void Map::createRoom(int width, int height, int x, int y) noexcept {
 		for (int i = x; i < x + width; ++i) {
-			for (int j = y; j < y + width; ++j) {
+			for (int j = y; j < y + height; ++j) {
 				if (i == x || i == x + width - 1 || j == y || j == y + height - 1) {
 					map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor,
 						WALL_TILE.bgColor, i, j });

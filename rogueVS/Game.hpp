@@ -5,6 +5,8 @@
 #include <vector>
 #include "GameObject.hpp"
 #include <memory>
+#include "Map.hpp"
+#include "Player.hpp"
 
 namespace rg {
 	class Game {
@@ -18,9 +20,14 @@ namespace rg {
 		Window gameWindow;
 		bool isRunning;
 		std::vector<std::shared_ptr<GameObject>> actors;
+		Map map;
+		Player player;
 
 		void runGameLoop() noexcept;
+		void runGame() noexcept;
+		void drawObjects() noexcept;
 		void handleInput() noexcept;
+		void handleGameWindow() noexcept;
 		void endGame() noexcept;
 	};
 }

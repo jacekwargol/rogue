@@ -13,9 +13,12 @@ namespace rg {
 			TCODColor bgColor = TCODColor::black,
 			int posX = -1, int posY = -1);
 
-		~GameObject();
+		virtual ~GameObject() = 0;
 
 		void draw(Window& window) noexcept;
+
+		int getX() const noexcept;
+		int getY() const noexcept;
 
 	protected:
 		Tile tile;

@@ -6,7 +6,8 @@
 #include "Map.hpp"
 
 namespace rg {
-	Game::Game() : gameWindow{}, isRunning{ false }, actors{}, map{ 50, 50 }, player{ 13, 13 } {
+	Game::Game() : gameWindow{}, isRunning{ false }, actors{}, map{ Utils::Vector2{50, 50} }, 
+		player{ Utils::Vector2{13, 13 } } {
 		actors.push_back(std::make_shared<Player>(player));
 		map.generateMap();
 	}
@@ -49,6 +50,18 @@ namespace rg {
 		TCODSystem::checkForEvent(TCOD_EVENT_KEY_PRESS, &key, nullptr);
 
 		switch (key.vk) {
+		case TCODK_UP:
+			gameWindow.moveView(0, -1);
+			break;
+		case TCODK_DOWN:
+			gameWindow.moveView(0, 1);
+			break;
+		case TCODK_LEFT:
+			gameWindow.moveView(-1, 0);
+			break;
+		case TCODK_RIGHT:
+			gameWindow.moveView(1, 0);
+			break;
 		case TCODK_ESCAPE:
 			endGame();
 			return;

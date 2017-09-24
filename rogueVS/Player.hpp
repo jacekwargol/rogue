@@ -6,7 +6,7 @@
 namespace rg {
 	class Player : public GameObject {
 	public:
-		Player(int x = -1, int y = -1);
+		Player(Utils::Vector2 pos = Utils::Vector2{ -1, -1 });
 		~Player();
 	};
 }

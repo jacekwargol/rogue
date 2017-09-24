@@ -4,76 +4,64 @@
 #include <algorithm>
 
 namespace rg {
-	Map::Map(int height, int width) : width{ width }, height{ height }, map{}, rooms{} {
+	Map::Map(Utils::Vector2 size) : size{ size },
+		map(size.x, std::vector<Tile>(size.y, BLANK_TILE)) {
 	}
+
 
 	Map::~Map() = default;
 
-	Map::Room::Room(int upperLeftX, int upperLeftY, int width, int height, bool isConnected) :
-		upperLeftX{ upperLeftX }, upperLeftY{ upperLeftY }, width{ width }, height{ height }, isConnected{ isConnected } {
+	Map::Room::Room(Utils::Vector2 upperLeft, Utils::Vector2 size, bool isConnected) :
+		upperLeft{ upperLeft }, size{ size }, isConnected{ isConnected } {
 	}
 
 	void Map::generateMap() noexcept {
 		TCODRandom rng;
 		int noRooms = rng.get(15, 25);
 		for (int i = 0; i < noRooms; ++i) {
-			int roomWidth = rng.get(5, 20);
-			int roomHeight = rng.get(5, 20);
-			int roomGapX = rng.get(5, 20);
-			int roomGapY = rng.get(5, 20);
-			createRoom(roomHeight, roomWidth, roomWidth + i * roomGapX, roomHeight + i * roomGapY);
+			Utils::Vector2 roomSize{ rng.get(5, 20), rng.get(5, 20) };
+			Utils::Vector2 roomGap{ rng.get(5, 20), rng.get(5, 20) };
+			createRoom(roomSize, roomGap);
 		}
 
 		createCorridors();
 	}
 
 	void Map::draw(Window& window) noexcept {
-		for (auto& tile : map) {
-			window.drawTile(tile);
+		//for (auto row = map.cbegin(); row != map.cend(); ++row) {
+		//	for (auto col = row->cbegin(); col != row->cend(); ++col) {
+		//		window.drawTile(*col);
+		//	}
+		//}
+		for (int i = 0; i < size.x; ++i) {
+			for (int j = 0; j < size.y; ++j) {
+				window.drawTile(Utils::Vector2{ i, j }, map[i][j]);
+			}
 		}
+
 	}
 
-	bool Map::isWall(int x, int y) const noexcept {
-		if (std::find_if(map.cbegin(), map.cend(),
-			[&](const Tile& tile) {
-			return tile.x == x && tile.y == y && tile.symbol == WALL_TILE.symbol;
-		}) != map.cend()) {
-
-			return true;
-		}
-
-		return false;
-	}
-
-	bool Map::isTileAtPosition(int x, int y) const noexcept {
-		if (std::find_if(map.cbegin(), map.cend(),
-			[&](const Tile& tile) {
-			return tile.x == x && tile.y == y;
-		}) != map.cend()) {
-
-			return true;
-		}
-
-		return false;
+	bool Map::isTileAtPosition(Utils::Vector2 pos) const noexcept {
+		return map[pos.x][pos.y] != BLANK_TILE;
 	}
 
 
 
-	void Map::createRoom(int width, int height, int x, int y) noexcept {
-		for (int i = x; i < x + width; ++i) {
-			for (int j = y; j < y + height; ++j) {
-				if ((i == x || i == x + width - 1 || j == y || j == y + height - 1) && !isTileAtPosition(i, j)) {
-					map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor,
-						WALL_TILE.bgColor, i, j });
+
+
+	void Map::createRoom(Utils::Vector2 size, Utils::Vector2 pos) noexcept {
+		for (int i = pos.x; i < pos.x + size.x; ++i) {
+			for (int j = pos.y; j < pos.y + size.y; ++j) {
+				if ((i == pos.x || i == pos.x + size.x - 1 || j == pos.y || j == pos.y + size.y - 1) && !isTileAtPosition(Utils::Vector2{ i, j })) {
+					map[i][j] = WALL_TILE;
 				}
 				else {
-					map.push_back(Tile{ FLOOR_TILE.symbol, FLOOR_TILE.symColor,
-						FLOOR_TILE.bgColor, i, j });
+					map[i][j] = FLOOR_TILE;
 				}
 			}
 		}
 
-		rooms.push_back(Room{ x, y, width, height });
+		rooms.push_back(Room{ pos, size });
 	}
 
 	void Map::createCorridors() noexcept {
@@ -83,31 +71,26 @@ namespace rg {
 	}
 
 	void Map::connectRooms(Room& room1, Room& room2) noexcept {
-		int startingX = (room1.upperLeftX + room1.width) / 2;
-		int startingY = (room1.upperLeftY + room1.height) / 2;
-		int endingX = (room2.upperLeftX + room2.width) / 2;
-		int endingY = (room2.upperLeftY + room2.height) / 2;
+		//int startingX = (room1.upperLeftX + room1.width) / 2;
+		//int startingY = (room1.upperLeftY + room1.height) / 2;
+		//int endingX = (room2.upperLeftX + room2.width) / 2;
+		//int endingY = (room2.upperLeftY + room2.height) / 2;
 
-		int dirX = (startingX < endingX ? 1 : -1);
-		int dirY = (startingY < endingY ? 1 : -1);
+		//int dirX = (startingX < endingX ? 1 : -1);
+		//int dirY = (startingY < endingY ? 1 : -1);
 
-		while (startingX != endingX) {
-			map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX, startingY - 1 });
-			map.push_back(Tile{ FLOOR_TILE.symbol, FLOOR_TILE.symColor, FLOOR_TILE.bgColor, startingX, startingY });
-			map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX, startingY + 1});
-			startingX += dirX;
-		}
+		//while (startingX != endingX) {
+		//	map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX, startingY - 1 });
+		//	map.push_back(Tile{ FLOOR_TILE.symbol, FLOOR_TILE.symColor, FLOOR_TILE.bgColor, startingX, startingY });
+		//	map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX, startingY + 1 });
+		//	startingX += dirX;
+		//}
 
-		while (startingY != endingY) {
-			map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX - 1, startingY });
-			map.push_back(Tile{ FLOOR_TILE.symbol, FLOOR_TILE.symColor, FLOOR_TILE.bgColor, startingX, startingY });
-			map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX + 1, startingY });
-			startingY += dirY;
-		}
-
-		{
-
-		}
+		//while (startingY != endingY) {
+		//	map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX - 1, startingY });
+		//	map.push_back(Tile{ FLOOR_TILE.symbol, FLOOR_TILE.symColor, FLOOR_TILE.bgColor, startingX, startingY });
+		//	map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX + 1, startingY });
+		//	startingY += dirY;
+		//}
 	}
 }
-

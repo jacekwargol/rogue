@@ -4,38 +4,38 @@
 
 #include "Tile.hpp"
 #include "Window.hpp"
+#include "Vector2.hpp"
 
 namespace rg {
-	const Tile WALL_TILE{ '#', TCODColor::white, TCODColor::black };
-	const Tile FLOOR_TILE{ '.', TCODColor::white, TCODColor::black };
+	const Tile WALL_TILE{ '#' };
+	const Tile FLOOR_TILE{ '.' };
+	const Tile BLANK_TILE{ ' ' };
 
 	class Map {
 	public:
-		Map(int width = 50, int height = 50);
+		Map(Utils::Vector2 size = Utils::Vector2{ 50, 50 });
 		~Map();
 
 		void generateMap() noexcept;
 		void draw(Window& window) noexcept;
 
-		bool isWall(int x, int y) const noexcept;
-		bool isTileAtPosition(int x, int y) const noexcept;
+		bool isWall(Utils::Vector2 pos) const noexcept;
+		bool isTileAtPosition(Utils::Vector2 pos) const noexcept;
 
 	private:
 		struct Room {
-			int upperLeftX;
-			int upperLeftY;
-			int width;
-			int height;
+			Utils::Vector2 upperLeft;
+			Utils::Vector2 size;
 			bool isConnected;
 
-			Room(int upperLeftX, int upperLeftY, int width, int height, bool isConnected = false);
+			Room(Utils::Vector2 upperLeft, Utils::Vector2 size, bool isConnected = false);
 		};
 
-		int width, height;
-		std::vector<Tile> map;
+		Utils::Vector2 size;
+		std::vector<std::vector<Tile>> map;
 		std::vector<Room> rooms;
 
-		void createRoom(int width, int height, int x, int y) noexcept;
+		void createRoom(Utils::Vector2 size, Utils::Vector2 pos) noexcept;
 		void createCorridors() noexcept;
 		void connectRooms(Room& room1, Room& room2) noexcept;
 

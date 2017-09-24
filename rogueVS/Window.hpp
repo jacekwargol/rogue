@@ -2,12 +2,13 @@
 
 #include "stdafx.h"
 #include "Tile.hpp"
+#include "Vector2.hpp"
 
 
 namespace rg {
 	class Window {
 	public:
-		explicit Window(int width = 150, int height = 75,
+		explicit Window(Utils::Vector2 size = Utils::Vector2{ 150, 75 },
 			const std::string& title = "rogue",
 			bool isFullScreen = false);
 
@@ -16,22 +17,18 @@ namespace rg {
 		void clear() noexcept;
 		void flush() noexcept;
 		bool isWindowClosed() const noexcept;
-		void drawTile(const Tile& tile) noexcept;
-		void drawTile(int x, int y, char ch,
-			TCODColor symColor = TCODColor::white, TCODColor bgColor = TCODColor::black) noexcept;
+		void drawTile(const Utils::Vector2& pos, const Tile& tile) noexcept;
 
-		void moveView(int x, int y) noexcept;
+		void moveView(int dx, int dy);
+		void moveViewToPos(const Utils::Vector2& newPos) noexcept;
 
 	private:
-		int width;
-		int height;
-		int viewX;
-		int viewY;
+		Utils::Vector2 size;
+		Utils::Vector2 viewportPos;
 		std::string title;
 		bool isFullScreen;
 
-		bool isInBoundaries(const Tile& tile) const noexcept;
-		bool isInBoundaries(int x, int y) const noexcept;
+		bool isInBoundaries(const Utils::Vector2& pos) const noexcept;
 	};
 }
 

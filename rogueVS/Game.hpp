@@ -2,9 +2,7 @@
 #include "stdafx.h"
 
 #include "Window.hpp"
-#include <vector>
 #include "GameObject.hpp"
-#include <memory>
 #include "Map.hpp"
 #include "Player.hpp"
 

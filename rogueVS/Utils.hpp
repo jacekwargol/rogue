@@ -10,8 +10,9 @@ namespace Utils {
 		int getDist(Vector2 other) const noexcept;
 
 		Vector2& operator*(int i) noexcept { x *= i; y *= i; return *this; }
+		bool operator==(const Vector2& other) const noexcept { return (x == other.x && y == other.y); }
+		bool operator!=(const Vector2& other) const noexcept { return !(*this == other); }
 	};
-
 }
 
 

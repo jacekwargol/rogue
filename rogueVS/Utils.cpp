@@ -1,5 +1,6 @@
 #include "stdafx.h"
-#include "Vector2.hpp"
+
+#include "Utils.hpp"
 
 namespace Utils {
 	Vector2::Vector2(int x, int y) : x{ x }, y{ y } {

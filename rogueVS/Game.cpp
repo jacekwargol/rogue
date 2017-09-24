@@ -1,8 +1,8 @@
 #include "stdafx.h"
+
 #include "Game.hpp"
 #include "GameObject.hpp"
 #include "Player.hpp"
-#include <iostream>
 #include "Map.hpp"
 
 namespace rg {

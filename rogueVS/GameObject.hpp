@@ -3,7 +3,7 @@
 
 #include "Window.hpp"
 #include "Tile.hpp"
-#include "Vector2.hpp"
+#include "Utils.hpp"
 
 namespace rg {
 	struct Tile;

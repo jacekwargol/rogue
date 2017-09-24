@@ -1,7 +1,6 @@
 #include "stdafx.h"
+
 #include "Map.hpp"
-#include <iostream>
-#include <algorithm>
 
 namespace rg {
 	Map::Map(Utils::Vector2 size) : size{ size },
@@ -19,10 +18,8 @@ namespace rg {
 		TCODRandom rng;
 		int noRooms = rng.get(15, 25);
 		for (int i = 0; i < noRooms; ++i) {
-			Utils::Vector2 roomSize{ rng.get(5, 20), rng.get(5, 20) };
+			Utils::Vector2 roomSize{ rng.get(5, 40), rng.get(5, 40) };
 			Utils::Vector2 roomPos{ rng.get(0, size.x - roomSize.x), rng.get(0, size.y - roomSize.y) };
-			std::cout << size.x << " " << size.y << std::endl;
-			std::cout << roomPos.x << " " << roomPos.y << std::endl;
 			createRoom(roomSize, roomPos);
 		}
 
@@ -43,9 +40,18 @@ namespace rg {
 	}
 
 	void Map::createRoom(Utils::Vector2 size, Utils::Vector2 pos) noexcept {
+		//TODO: add walls at edges of overlapping rooms
+
+		bool isOverlapping = false;
+
 		for (int i = pos.x; i < pos.x + size.x; ++i) {
 			for (int j = pos.y; j < pos.y + size.y; ++j) {
-				if ((i == pos.x || i == pos.x + size.x - 1 || j == pos.y || j == pos.y + size.y - 1) && !isTileAtPosition(Utils::Vector2{ i, j })) {
+				if (isTileAtPosition(Utils::Vector2{ i, j })) {
+					map[i][j] = FLOOR_TILE;
+					isOverlapping = true;
+				}
+
+				if ((i == pos.x || i == pos.x + size.x - 1 || j == pos.y || j == pos.y + size.y - 1) && !isOverlapping) {
 					map[i][j] = WALL_TILE;
 				}
 				else {
@@ -54,36 +60,56 @@ namespace rg {
 			}
 		}
 
-		rooms.push_back(Room{ pos, size });
-	}
-
-	void Map::createCorridors() noexcept {
-		for (auto room = rooms.begin(); room < rooms.end() - 2; ++room) {
-			connectRooms(*room, *(room + 1));
+		if (!isOverlapping) {
+			rooms.push_back(Room{ pos, size });
 		}
 	}
 
+	void Map::createCorridors() noexcept {
+		for (auto& room : rooms) {
+			if (!room.isConnected) {
+				auto nearestRoom = findNearestRoom(room);
+				connectRooms(room, nearestRoom);
+			}
+		}
+
+
+	}
+
 	void Map::connectRooms(Room& room1, Room& room2) noexcept {
-		//int startingX = (room1.upperLeftX + room1.width) / 2;
-		//int startingY = (room1.upperLeftY + room1.height) / 2;
-		//int endingX = (room2.upperLeftX + room2.width) / 2;
-		//int endingY = (room2.upperLeftY + room2.height) / 2;
+		auto dir = Utils::Vector2{
+			room1.upperLeft.x < room2.upperLeft.x ? 1 : -1,
+			room1.upperLeft.y < room2.upperLeft.y ? 1 : -1
+		};
+		auto startingPoint = room1.upperLeft;
+		auto endingPoint = room2.upperLeft;
 
-		//int dirX = (startingX < endingX ? 1 : -1);
-		//int dirY = (startingY < endingY ? 1 : -1);
+		while (startingPoint.x != endingPoint.x) {
+			startingPoint.x += dir.x;
+			map[startingPoint.x][startingPoint.y] = FLOOR_TILE;
+		}
+		while (startingPoint.y != endingPoint.y) {
+			startingPoint.y += dir.y;
+			map[startingPoint.x][startingPoint.y] = FLOOR_TILE;
+		}
 
-		//while (startingX != endingX) {
-		//	map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX, startingY - 1 });
-		//	map.push_back(Tile{ FLOOR_TILE.symbol, FLOOR_TILE.symColor, FLOOR_TILE.bgColor, startingX, startingY });
-		//	map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX, startingY + 1 });
-		//	startingX += dirX;
-		//}
+		room1.isConnected = true;
+		room2.isConnected = true;
+	}
 
-		//while (startingY != endingY) {
-		//	map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX - 1, startingY });
-		//	map.push_back(Tile{ FLOOR_TILE.symbol, FLOOR_TILE.symColor, FLOOR_TILE.bgColor, startingX, startingY });
-		//	map.push_back(Tile{ WALL_TILE.symbol, WALL_TILE.symColor, WALL_TILE.bgColor, startingX + 1, startingY });
-		//	startingY += dirY;
-		//}
+	Map::Room& Map::findNearestRoom(const Room& room) const noexcept {
+		int minDist = INT_MAX;
+		Room nearestRoom;
+		for (const auto& other : rooms) {
+			if (other.upperLeft != room.upperLeft) {
+				int currDist = room.upperLeft.getDist(other.upperLeft);
+				if (currDist < minDist) {
+					minDist = currDist;
+					nearestRoom = other;
+				}
+			}
+		}
+
+		return nearestRoom;
 	}
 }

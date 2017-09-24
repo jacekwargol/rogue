@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#include "include/libtcod.hpp"
 #include "Game.hpp"
 
 int main() {

@@ -12,6 +12,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <memory>
 
 
 #include "include/libtcod.hpp"

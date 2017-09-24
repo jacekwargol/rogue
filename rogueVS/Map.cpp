@@ -20,19 +20,16 @@ namespace rg {
 		int noRooms = rng.get(15, 25);
 		for (int i = 0; i < noRooms; ++i) {
 			Utils::Vector2 roomSize{ rng.get(5, 20), rng.get(5, 20) };
-			Utils::Vector2 roomGap{ rng.get(5, 20), rng.get(5, 20) };
-			createRoom(roomSize, roomGap);
+			Utils::Vector2 roomPos{ rng.get(0, size.x - roomSize.x), rng.get(0, size.y - roomSize.y) };
+			std::cout << size.x << " " << size.y << std::endl;
+			std::cout << roomPos.x << " " << roomPos.y << std::endl;
+			createRoom(roomSize, roomPos);
 		}
 
 		createCorridors();
 	}
 
 	void Map::draw(Window& window) noexcept {
-		//for (auto row = map.cbegin(); row != map.cend(); ++row) {
-		//	for (auto col = row->cbegin(); col != row->cend(); ++col) {
-		//		window.drawTile(*col);
-		//	}
-		//}
 		for (int i = 0; i < size.x; ++i) {
 			for (int j = 0; j < size.y; ++j) {
 				window.drawTile(Utils::Vector2{ i, j }, map[i][j]);
@@ -44,10 +41,6 @@ namespace rg {
 	bool Map::isTileAtPosition(Utils::Vector2 pos) const noexcept {
 		return map[pos.x][pos.y] != BLANK_TILE;
 	}
-
-
-
-
 
 	void Map::createRoom(Utils::Vector2 size, Utils::Vector2 pos) noexcept {
 		for (int i = pos.x; i < pos.x + size.x; ++i) {

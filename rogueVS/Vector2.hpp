@@ -8,6 +8,8 @@ namespace Utils {
 		int x, y;
 
 		int getDist(Vector2 other) const noexcept;
+
+		Vector2& operator*(int i) noexcept { x *= i; y *= i; return *this; }
 	};
 
 }

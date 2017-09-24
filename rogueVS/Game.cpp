@@ -6,7 +6,7 @@
 #include "Map.hpp"
 
 namespace rg {
-	Game::Game() : gameWindow{}, isRunning{ false }, actors{}, map{ Utils::Vector2{50, 50} }, 
+	Game::Game() : gameWindow{}, isRunning{ false }, actors{}, map{ Utils::Vector2{150, 150} }, 
 		player{ Utils::Vector2{13, 13 } } {
 		actors.push_back(std::make_shared<Player>(player));
 		map.generateMap();

@@ -13,7 +13,7 @@ namespace rg {
 
 	class Map {
 	public:
-		Map(Utils::Vector2 size = Utils::Vector2{ 50, 50 });
+		Map(Utils::Vector2 size = Utils::Vector2{ 150, 150 });
 		~Map();
 
 		void generateMap() noexcept;
